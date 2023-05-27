@@ -1,71 +1,61 @@
 package com.example.spajz;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FoodManager {
-    private List<Food> foodList;
+    private static final String SHARED_PREFS_NAME = "FoodManagerPrefs";
+    private static final String FOOD_LIST_KEY = "FoodListKey";
+
+    private Context context;
+    private SharedPreferences sharedPreferences;
+    private Gson gson;
 
     public FoodManager(Context context) {
-        loadFoodList(context);
-    }
-
-    public List<Food> loadFoodList(Context context) {
-        try {
-            InputStream inputStream = context.openFileInput("food_list.json");
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-            Gson gson = new Gson();
-            Type type = new TypeToken<List<Food>>() {}.getType();
-            List<Food> loadedFoodList = gson.fromJson(inputStreamReader, type);
-            inputStream.close();
-
-            if (loadedFoodList != null) {
-                foodList = loadedFoodList;
-            } else {
-                foodList = new ArrayList<>();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            foodList = new ArrayList<>();
-        }
-
-        return foodList;
-    }
-
-
-    private void saveFoodList(Context context) {
-        try {
-            OutputStream outputStream = context.openFileOutput("food_list.json", Context.MODE_PRIVATE);
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
-            Gson gson = new Gson();
-            gson.toJson(foodList, outputStreamWriter);
-            outputStreamWriter.close();
-            outputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void addFood(String foodName, int foodCount) {
-        Food food = new Food(foodName, foodCount);
-        foodList.add(food);
+        this.context = context;
+        sharedPreferences = context.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE);
+        gson = new Gson();
     }
 
     public List<Food> getFoodList() {
+        List<Food> foodList;
+        String json = sharedPreferences.getString(FOOD_LIST_KEY, null);
+        if (json != null) {
+            Type type = new TypeToken<List<Food>>() {}.getType();
+            foodList = gson.fromJson(json, type);
+        } else {
+            foodList = new ArrayList<>();
+        }
         return foodList;
     }
 
-    public void saveFoodListToJson(Context context) {
-        saveFoodList(context);
+    public void addFood(Food food) {
+        List<Food> foodList = getFoodList();
+        foodList.add(food);
+        saveFoodList(foodList);
+    }
+
+    public void deleteFood(Food food) {
+        List<Food> foodList = getFoodList();
+        for (int i = 0; i < foodList.size(); i++) {
+            Food f = foodList.get(i);
+            if (f.getName().equals(food.getName()) && f.getCount() == food.getCount()) {
+                foodList.remove(i);
+                break;
+            }
+        }
+        saveFoodList(foodList);
+    }
+
+    private void saveFoodList(List<Food> foodList) {
+        String json = gson.toJson(foodList);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(FOOD_LIST_KEY, json);
+        editor.apply();
     }
 }

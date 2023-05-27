@@ -11,21 +11,22 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class AddFoodActivity extends AppCompatActivity {
 
-    private Button buttonAddFood;
-    private FoodManager foodManager;
     private EditText editTextFoodName;
     private EditText editTextFoodCount;
+    private Button buttonAddFood;
+
+    private FoodManager foodManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_food_activity);
 
-        buttonAddFood = findViewById(R.id.buttonAddFood);
+        foodManager = new FoodManager(this);
+
         editTextFoodName = findViewById(R.id.editTextFoodName);
         editTextFoodCount = findViewById(R.id.editTextFoodCount);
-
-        foodManager = new FoodManager(this);
+        buttonAddFood = findViewById(R.id.buttonAddFood);
 
         buttonAddFood.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,16 +38,21 @@ public class AddFoodActivity extends AppCompatActivity {
 
     private void addFood() {
         String foodName = editTextFoodName.getText().toString().trim();
-        int foodCount = Integer.parseInt(editTextFoodCount.getText().toString().trim());
+        String foodCountText = editTextFoodCount.getText().toString().trim();
 
-        foodManager.addFood(foodName, foodCount);
-        foodManager.saveFoodListToJson(getBaseContext());
+        if (foodName.isEmpty() || foodCountText.isEmpty()) {
+            Toast.makeText(this, "Vyplňte prosím všechna pole", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        Toast.makeText(AddFoodActivity.this, "Potravina přidána", Toast.LENGTH_SHORT).show();
+        int foodCount = Integer.parseInt(foodCountText);
+        Food food = new Food(foodName, foodCount);
+        foodManager.addFood(food);
+
+        Toast.makeText(this, "Potravina přidána", Toast.LENGTH_SHORT).show();
 
         Intent resultIntent = new Intent();
         setResult(RESULT_OK, resultIntent);
         finish();
     }
-
 }

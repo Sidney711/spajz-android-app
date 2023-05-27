@@ -24,12 +24,15 @@
         android:paddingRight="8dp"
         tools:ignore="RtlSymmetry" />
 
+    <!-- Přidejte atribut android:onClick pro tlačítko mazání -->
     <ImageView
         android:id="@+id/imageViewDeleteFood"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:src="@drawable/delete_button"
-        android:contentDescription="Delete" />
+        android:contentDescription="Delete"
+        android:onClick="deleteFood" />
+
 
 </LinearLayout>
 

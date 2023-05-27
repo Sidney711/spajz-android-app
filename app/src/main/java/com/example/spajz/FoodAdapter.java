@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,10 +16,19 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
 
     private Context context;
     private List<Food> foodList;
+    private OnDeleteClickListener onDeleteClickListener;
 
     public FoodAdapter(Context context, List<Food> foodList) {
         this.context = context;
         this.foodList = foodList;
+    }
+
+    public interface OnDeleteClickListener {
+        void onDeleteClick(int position);
+    }
+
+    public void setOnDeleteClickListener(OnDeleteClickListener listener) {
+        onDeleteClickListener = listener;
     }
 
     @NonNull
@@ -45,14 +55,26 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         notifyDataSetChanged();
     }
 
-    static class FoodViewHolder extends RecyclerView.ViewHolder {
+    public class FoodViewHolder extends RecyclerView.ViewHolder {
         TextView textViewFoodName;
         TextView textViewFoodCount;
+        ImageView imageViewDeleteFood;
 
         public FoodViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewFoodName = itemView.findViewById(R.id.textViewFoodName);
             textViewFoodCount = itemView.findViewById(R.id.textViewFoodCount);
+            imageViewDeleteFood = itemView.findViewById(R.id.imageViewDeleteFood);
+
+            imageViewDeleteFood.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION && onDeleteClickListener != null) {
+                        onDeleteClickListener.onDeleteClick(position);
+                    }
+                }
+            });
         }
     }
 }

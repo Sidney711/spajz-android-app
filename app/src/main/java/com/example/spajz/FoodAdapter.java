@@ -1,6 +1,8 @@
 package com.example.spajz;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +47,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         holder.textViewFoodCount.setText(String.valueOf(food.getCount()));
     }
 
+
     @Override
     public int getItemCount() {
         return foodList.size();
@@ -59,12 +62,14 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         TextView textViewFoodName;
         TextView textViewFoodCount;
         ImageView imageViewDeleteFood;
+        ImageView imageViewEditFood;
 
         public FoodViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewFoodName = itemView.findViewById(R.id.textViewFoodName);
             textViewFoodCount = itemView.findViewById(R.id.textViewFoodCount);
             imageViewDeleteFood = itemView.findViewById(R.id.imageViewDeleteFood);
+            imageViewEditFood = itemView.findViewById(R.id.imageViewEditFood);
 
             imageViewDeleteFood.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -75,6 +80,30 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
                     }
                 }
             });
+
+            imageViewEditFood.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        editFood(position);
+                    }
+                }
+            });
         }
     }
+
+
+    public void editFood(int position) {
+        // Získání potraviny na zadané pozici
+        Food food = foodList.get(position);
+
+        // Vytvoření intentu pro spuštění UpdateFoodActivity
+        Intent intent = new Intent(context, UpdateFoodActivity.class);
+        intent.putExtra("foodName", food.getName());
+        intent.putExtra("foodCount", food.getCount());
+        intent.putExtra("position", position);
+        ((Activity) context).startActivityForResult(intent, 1);
+    }
+
 }

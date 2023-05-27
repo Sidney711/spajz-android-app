@@ -20,6 +20,29 @@ public class FoodListActivity extends AppCompatActivity implements FoodAdapter.O
     private FoodManager foodManager;
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            int position = data.getIntExtra("position", -1);
+            if (position != -1) {
+                String foodName = data.getStringExtra("foodName");
+                int foodCount = data.getIntExtra("foodCount", 0);
+
+                // Aktualizace potraviny v seznamu
+                Food updatedFood = foodList.get(position);
+                updatedFood.setName(foodName);
+                updatedFood.setCount(foodCount);
+                foodAdapter.notifyItemChanged(position);
+
+                // Uložení aktualizovaného seznamu potravin
+                foodManager.saveFoodList(foodList);
+            }
+        }
+    }
+
+
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.food_list_activity);

@@ -52,10 +52,11 @@ public class FoodManager {
         saveFoodList(foodList);
     }
 
-    private void saveFoodList(List<Food> foodList) {
+    public void saveFoodList(List<Food> foodList) {
         String json = gson.toJson(foodList);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(FOOD_LIST_KEY, json);
         editor.apply();
     }
+
 }

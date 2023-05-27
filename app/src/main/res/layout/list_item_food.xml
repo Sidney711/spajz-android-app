@@ -33,7 +33,15 @@
         android:contentDescription="Delete"
         android:onClick="deleteFood" />
 
-
+    <ImageView
+        android:id="@+id/imageViewEditFood"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/edit_icon"
+        android:contentDescription="Edit"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:onClick="editFood" />
 </LinearLayout>
 
 

@@ -52,6 +52,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:background="#d6eaf2"
         android:elevation="8dp"
@@ -60,29 +61,10 @@
         android:text="Nákupní seznam"
         android:textColor="#000000"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@id/settingsButton"
-        app:layout_constraintDimensionRatio="3:1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/foodListButton" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/settingsButton"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:background="#CAB6E4"
-        android:elevation="8dp"
-        android:padding="12dp"
-        android:radius="24dp"
-        android:text="Nastavení"
-        android:textColor="#000000"
-        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="3:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/shoppingListButton" />
+        app:layout_constraintTop_toBottomOf="@id/foodListButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

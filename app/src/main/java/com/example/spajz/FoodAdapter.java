@@ -19,10 +19,15 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
     private Context context;
     private List<Food> foodList;
     private OnDeleteClickListener onDeleteClickListener;
+    private boolean showButtons = false;
 
     public FoodAdapter(Context context, List<Food> foodList) {
         this.context = context;
         this.foodList = foodList;
+    }
+
+    public void setShowButtons(boolean showButtons) {
+        this.showButtons = showButtons;
     }
 
     public interface OnDeleteClickListener {
@@ -43,8 +48,15 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
     @Override
     public void onBindViewHolder(@NonNull FoodViewHolder holder, int position) {
         Food food = foodList.get(position);
+
         holder.textViewFoodName.setText(food.getName());
         holder.textViewFoodCount.setText(String.valueOf(food.getCount()));
+
+        // Zobrazení/skrytí tlačítek na základě hodnoty showButtons
+        if (showButtons) {
+            holder.imageViewDeleteFood.setVisibility(View.GONE);
+            holder.imageViewEditFood.setVisibility(View.GONE);
+        }
     }
 
 

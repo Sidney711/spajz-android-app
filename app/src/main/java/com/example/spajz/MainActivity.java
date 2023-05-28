@@ -14,6 +14,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         setFoodListButton();
+
+        Button buttonShoppingList = findViewById(R.id.shoppingListButton);
+        buttonShoppingList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ShoppingListActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void setFoodListButton() {

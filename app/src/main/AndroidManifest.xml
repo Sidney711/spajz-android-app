@@ -12,21 +12,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Spajz"
         tools:targetApi="31">
-        <activity android:name=".UpdateFoodActivity"
+        <activity
+            android:name=".ShoppingListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UpdateFoodActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.example.spajz.ACTION_UPDATE_FOOD" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".AddFoodActivity"
             android:exported="false" />
         <activity
             android:name=".FoodListActivity"
             android:exported="false" />
-
         <activity
             android:name=".MainActivity"
             android:exported="true">
